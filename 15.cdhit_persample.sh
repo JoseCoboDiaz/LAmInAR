@@ -1,0 +1,8 @@
+#mkdir 01.cdhit_outputs
+#for x in $(ls 00.reads_quality_fixname | sed "s/.fasta//g"); do \
+for x in $(cat list_C.txt | sed "s/.fasta//g"); do \
+echo ${x} /
+cdhit -i 00.reads_quality_fixname/${x}.fasta -o 01.cdhit_outputs/${x} -c 0.9 -s 0.9 -T 32 -M 200000; done
+
+
+#grep -cv "^>" *
