@@ -1,0 +1,25 @@
+ruby 11.cp_files.rb
+
+conda activate gridion
+./12.porechop.sh
+./13.nanofilt.sh
+conda deactivate
+
+ruby 14.cat_fasta.rb
+./15.cdhit_persample.sh
+
+ruby 15b.extract_seqcounts.rb
+
+./16.parallel_integron_finder.sh
+
+mkdir 01.cdhit_outputs/clstr_files
+mv 01.cdhit_output/*clstr 01.cdhit_output/clstr_files/
+
+./16b.extract_integrons_fasta.sh 
+
+ruby 17.count_fasta_integrons_v3.rb
+
+blastn -query all_integron.fna -db /datos/DATABASE/Resfinder_20240128/Resfinder2024 -out blastn_Resfinder.txt -culling_limit 1 -num_threads 32 -outfmt '6 std qlen slen'
+
+##Select genes with %identity and coverage > 80 to make the matrix and save it in blastn_Resfinder_filtered.txt for patterns analysis:
+ruby 17.mkmatrix_blast_onefile_v3.rb
